@@ -1,0 +1,20 @@
+html
+  head
+    title Ela's blog
+    link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css" integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi" crossorigin="anonymous")
+    meta(name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1")
+  body
+    nav(class="navbar navbar-dark bg-inverse")
+
+      a(class="navbar-brand" href="#") Navbar
+      ul(class="nav navbar-nav")
+        li(class="nav-item active")
+          a(class="nav-link" href="#")Home
+      form(class="form-inline float-xs-right")
+        input(class="form-control" type="text" placeholder="Search")
+        button(class="btn btn-outline-success" type="submit") Search
+
+    block content
+
+  script(src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha256-/SIrNqv8h6QGKDuNoLGA4iret+kyesCkHGzVUUV0shc=" crossorigin="anonymous")
+  script(src="/js/application.js")

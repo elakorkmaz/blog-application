@@ -1,0 +1,11 @@
+extends ../application.pug
+
+block content
+  .container
+  h1 blogposts
+  each blogpost in blogposts
+    .card.card-block
+      .row
+        .col-xs-12.col-md-8
+          h3= blogpost.title
+          p= blogpost.body
