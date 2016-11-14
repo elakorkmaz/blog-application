@@ -8,7 +8,7 @@ var app = express();
     sequelize = new Sequelize('blog', process.env.POSTGRES_USER, process.env.POSTGRES_PASSWORD, { dialect: 'postgres' });
 
 
-var Blogpost = sequelize.define('blogpost', {
+var blogPost = sequelize.define('blogPost', {
   title: Sequelize.STRING,
   slug: Sequelize.STRING,
   body: Sequelize.TEXT
@@ -21,23 +21,23 @@ app.use(morgan('dev'));
 app.use(express.static('public'));
 
 app.get('/', (request, response) => {
-  Blogpost.findAll({ order: 'id ASC' }).then((blogposts) => {
-    response.render('blogposts/index', { blogposts: blogposts });
+  blogPost.findAll({ order: 'id ASC' }).then((blogPosts) => {
+    response.render('blog-posts/index', { blogPosts: blogPosts });
   });
 });
 
 app.get('/new', (request, response) => {
-  response.render('blogposts/new');
+  response.render('blog-posts/new');
 });
 
-app.post('/blogposts', (request, response) => {
+app.post('/blog-posts', (request, response) => {
   console.log('blog posted');
   if (request.body.title) {
     Blogpost.create(request.body).then(() => {
-      response.redirect('/');
+      response.redirect('/blog-posts');
     });
   } else {
-    response.redirect('/new');
+    response.redirect('/blog-posts/new');
   }
 });
 
