@@ -5,8 +5,13 @@ const express = require('express'),
       Sequelize = require('sequelize');
 
 var app = express();
-    sequelize = new Sequelize('bulletinboard', process.env.POSTGRES_USER, process.env.POSTGRES_PASSWORD, { dialect: 'postgres' });
+    sequelize = new Sequelize('blog', process.env.POSTGRES_USER, process.env.POSTGRES_PASSWORD, { dialect: 'postgres' });
 
+
+var Blogpost = sequelize.define('blogpost', {
+  title: Sequelize.STRING,
+  body: Sequelize.TEXT
+});
 
 app.set('view engine', 'pug');
 
@@ -15,7 +20,15 @@ app.use(morgan('dev'));
 app.use(express.static('public'));
 
 app.get('/', (request, response) => {
-  response.redirect('blogposts/index');
+  Blogpost.findAll({ order: 'id ASC' }).then((blogposts) => {
+    response.render('blogposts/index', { blogposts: blogposts });
+  });
+});
+
+app.get('/:id', (request, response) => {
+  Blogpost.findById(request.params.id).then((blogpost) => {
+    response.render('blogposts/show', { blogpost: blogpost });
+  });
 });
 
 app.get('/new', (request, response) => {
@@ -26,16 +39,6 @@ app.get('/blogposts', (request, response) => {
   response.render('/index');
 });
 
-app.post('/blogposts', (request, response) => {
-  console.log('blog posted');
-  if (request.params.id) {
-    Blogpost.create(request.params.id).then(() => {
-      response.redirect('/');
-    });
-  } else {
-    response.redirect('/new');
-  }
-});
 
 sequelize.sync().then(() => {
   console.log('connected to database');
