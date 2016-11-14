@@ -10,6 +10,7 @@ var app = express();
 
 var Blogpost = sequelize.define('blogpost', {
   title: Sequelize.STRING,
+  slug: Sequelize.STRING,
   body: Sequelize.TEXT
 });
 
@@ -25,20 +26,20 @@ app.get('/', (request, response) => {
   });
 });
 
-app.get('/:id', (request, response) => {
-  Blogpost.findById(request.params.id).then((blogpost) => {
-    response.render('blogposts/show', { blogpost: blogpost });
-  });
-});
-
 app.get('/new', (request, response) => {
   response.render('blogposts/new');
 });
 
-app.get('/blogposts', (request, response) => {
-  response.render('/index');
+app.post('/blogposts', (request, response) => {
+  console.log('blog posted');
+  if (request.body.title) {
+    Blogpost.create(request.body).then(() => {
+      response.redirect('/');
+    });
+  } else {
+    response.redirect('/new');
+  }
 });
-
 
 sequelize.sync().then(() => {
   console.log('connected to database');
