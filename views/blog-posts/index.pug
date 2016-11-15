@@ -4,7 +4,6 @@ block content
   section(class="container")
     .row
       .col-xs-8
-        if blogPosts
           each blogPost in blogPosts
             .card.card-block
               a(href="/" + blogPost.slug class="h2")=blogPost.title

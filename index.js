@@ -1,4 +1,5 @@
 const express = require('express'),
+      displayRoutes = require('express-routemap'),
       morgan = require('morgan'),
       bodyParser = require('body-parser'),
       pug = require('pug'),
@@ -6,11 +7,11 @@ const express = require('express'),
       Sequelize = require('sequelize');
 
 var app = express(),
-    sequelize = new Sequelize('blog', process.env.POSTGRES_USER, process.env.POSTGRES_PASSWORD, { dialect: 'postgres' });
+    sequelize = new Sequelize('blog', 'ela', '', { dialect: 'postgres' });
 
 var db = require('./models');
 
-var blogPost = sequelize.define('blogPost', {
+var BlogPost = sequelize.define('BlogPost', {
   title: Sequelize.STRING,
   slug: Sequelize.STRING,
   content: Sequelize.TEXT
@@ -57,10 +58,10 @@ app.get('/new', (request, response) => {
 });
 
 app.get('/admin/blog-posts', (request, response) => {
-  response.render('/blog-posts/index');
+  response.render('blog-posts/index');
 });
 
-app.get('admin/blog-posts/new', (request, response) => {
+app.get('/admin/blog-posts/new', (request, response) => {
   response.render('blog-posts/new');
 });
 
@@ -78,11 +79,11 @@ app.post('/blog-posts', (request, response) => {
 });
 
 app.put('/blog-posts/:id', (request, response) => {
-  db.BlogPost.update(request.body, { 
+  db.BlogPost.update(request.body, {
     where: {
       id: request.params.id
     }
-  }).then((blogPost) => {
+  }).then(() => {
     res.redirect('/' + post.slug);
   });
 });
@@ -102,7 +103,7 @@ app.get('/admin/blog-posts/:id/edit', (request, response) => {
     where: {
       id: request.params.slug
     }
-  }).then((post) => {
+  }).then((blogPost) => {
     res.render('blog-posts/show', { blogPost: blogPost });
   }).catch((error) => {
     res.status(404);
@@ -113,5 +114,6 @@ sequelize.sync().then(() => {
   console.log('connected to database');
   app.listen(3000, () => {
     console.log('server is now running on port 3000');
+    displayRoutes(app);
   });
 });
