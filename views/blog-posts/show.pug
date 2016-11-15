@@ -1,16 +1,18 @@
 extends ../application.pug
 
 block content
-  .container
+  section(class="container")
     .card.card-block
       .row
-        .col-xs-8.offset-xs-2
-        h2= blog-post.title
-        p= blog-post.body
-        .row
-          .col-xs-3.offset-xs-6
-            a(href="/blog-posts/" + blog-post.id + "/edit" class="btn btn-warning btn-block") Edit blog-post
-          .col-xs-3
-            form(action="/blog-posts/" + blog-post.id method="POST")
-              input(type="hidden" name="_method" value="DELETE")
-              button(type="submit" class="btn btn-daner btn-block" data-blog-post=blog-post.id) Delete blog
+        .col-xs-8
+          a(href="/" class="h2") Title
+        .col-xs-4.text-xs-right
+          a(href="/" class="btn btn-warning") Edit post
+          a(href="/" class="btn btn-danger") Delete post
+    .card.card-block
+      .row
+        .col-xs-8
+          a(href="/" class="h2") Title
+        .col-xs-4.text-xs-right
+          a(href="/" class="btn btn-warning") Edit post
+          a(href="/" class="btn btn-danger") Delete post

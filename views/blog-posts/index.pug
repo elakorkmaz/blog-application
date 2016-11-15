@@ -1,11 +1,15 @@
 extends ../application.pug
 
 block content
-  .container
-  h1 Blog posts
-  each blogPost in blogPosts
-    .card.card-block
-      .row
-        .col-xs-12.col-md-8
-          h3= blogPost.title
-          p= blogPost.body
+  section(class="container")
+    .row
+      .col-xs-8
+        .card.card-block
+              h3 Title
+              p Text
+        .card.card-block
+              h3 Title
+              p Text
+      .col-xs-4
+        .card.card-block
+          h3 Sidebar

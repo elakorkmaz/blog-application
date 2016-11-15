@@ -2,14 +2,12 @@ html
   head
     title Ela's blog
     link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css" integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi" crossorigin="anonymous")
-    meta(name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1")
+    meta(charset="utf-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no")
   body
     nav(class="navbar navbar-dark bg-inverse")
 
-      a(class="navbar-brand" href="/") Ela Korkmaz |
-      ul(class="nav navbar-nav")
-        li(class="nav-item active")
-          a(class="nav-link" href="/") Blog
+      a(class="navbar-brand" href="/") Ela Korkmaz | Blog
       a(href="/new" class="btn btn-success float-xs-right") Post a new blog
 
     block content
