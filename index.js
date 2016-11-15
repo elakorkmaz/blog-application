@@ -5,7 +5,7 @@ const express = require('express'),
       methodOverride = require('method-override'),
       Sequelize = require('sequelize');
 
-var app = express();
+var app = express(),
     sequelize = new Sequelize('blog', process.env.POSTGRES_USER, process.env.POSTGRES_PASSWORD, { dialect: 'postgres' });
 
 var db = require('./models');
@@ -13,7 +13,7 @@ var db = require('./models');
 var blogPost = sequelize.define('blogPost', {
   title: Sequelize.STRING,
   slug: Sequelize.STRING,
-  body: Sequelize.TEXT
+  content: Sequelize.TEXT
 });
 
 app.use(morgan('dev'));
@@ -35,8 +35,20 @@ app.use(methodOverride((req, res) => {
 );
 
 app.get('/', (request, response) => {
-  blogPost.findAll({ order: 'id DESC' }).then((blogPosts) => {
+  db.BlogPost.findAll({ order: [['createdAt', 'DESC']] }).then((blogPosts) => {
     response.render('blog-posts/index', { blogPosts: blogPosts });
+  });
+});
+
+app.get('/:slug', (request, response) => {
+  db.BlogPost.findOne({
+    where: {
+      slug: request.params.slug
+    }
+  }).then((blogPost) => {
+    response.render('/blog-posts/show', { blogPost: blogPost });
+  }).catch((error) => {
+    response.status(404).end();
   });
 });
 
@@ -58,7 +70,7 @@ app.get('/show', (request, response) => {
 
 app.post('/blog-posts', (request, response) => {
   console.log(request.body);
-    db.blogPost.create(request.body).then((blogPost) => {
+    db.BlogPost.create(request.body).then((blogPost) => {
       response.redirect('/' + blogPost.slug);
     }).catch((error) => {
       throw error;
@@ -66,7 +78,11 @@ app.post('/blog-posts', (request, response) => {
 });
 
 app.put('/blog-posts/:id', (request, response) => {
-  db.blogPost.update(request.body).then((blogPost) => {
+  db.BlogPost.update(request.body, { 
+    where: {
+      id: request.params.id
+    }
+  }).then((blogPost) => {
     res.redirect('/' + post.slug);
   });
 });
@@ -74,24 +90,24 @@ app.put('/blog-posts/:id', (request, response) => {
 app.delete('/blog-posts/:id', (request, response) => {
   db.BlogPost.destroy({
     where: {
-      id: req.params.id
+      id: request.params.id
     }
   }).then(() => {
     res.redirect('/admin/blog-posts');
   });
 });
 
-/* app.get('/:slug', (request, response) => {
+app.get('/admin/blog-posts/:id/edit', (request, response) => {
   db.BlogPost.findOne({
     where: {
-      slug: req.params.slug
+      id: request.params.slug
     }
   }).then((post) => {
     res.render('blog-posts/show', { blogPost: blogPost });
   }).catch((error) => {
     res.status(404);
   });
-}); */
+});
 
 sequelize.sync().then(() => {
   console.log('connected to database');

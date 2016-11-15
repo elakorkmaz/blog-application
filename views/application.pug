@@ -8,7 +8,10 @@ html
     nav(class="navbar navbar-dark bg-inverse")
 
       a(class="navbar-brand" href="/") Ela Korkmaz | Blog
-      a(href="/new" class="btn btn-success float-xs-right") Post a new blog
+
+      a(class="nav navbar-nav float-xs-right")
+        a(class="nav-item nav-link active" href="/admin/blog-posts") Admin panel
+        a(class="nav-item nav-link active" href="/new") Post a new blog
 
     block content
 

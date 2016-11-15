@@ -2,17 +2,18 @@ extends ../application.pug
 
 block content
   section(class="container")
-    .card.card-block
-      .row
-        .col-xs-8
-          a(href="/" class="h2") Title
-        .col-xs-4.text-xs-right
-          a(href="/" class="btn btn-warning") Edit post
-          a(href="/" class="btn btn-danger") Delete post
-    .card.card-block
-      .row
-        .col-xs-8
-          a(href="/" class="h2") Title
-        .col-xs-4.text-xs-right
-          a(href="/" class="btn btn-warning") Edit post
-          a(href="/" class="btn btn-danger") Delete post
+      each blogPost in blogPosts
+        .card.card-block
+          .row
+            .col-xs-8
+              a(href="/" class="h2")=blogPost.title
+            .col-xs-4.text-xs-right
+              a(href="/" class="btn btn-warning") Edit post
+              a(href="/" class="btn btn-danger") Delete post
+        .card.card-block
+          .row
+            .col-xs-8
+              a(href="/" class="h2")=blogPost.title
+            .col-xs-4.text-xs-right
+              a(href="/" class="btn btn-warning") Edit post
+              a(href="/" class="btn btn-danger") Delete post
