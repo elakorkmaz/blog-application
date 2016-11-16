@@ -55,7 +55,7 @@ app.get('/:slug', (request, response) => {
 
 app.get('/admin/blog-posts', (request, response) => {
   db.BlogPost.findAll().then((blogPosts) => {
-    response.render('blog-posts/admin', { blogPosts: blogPosts });
+    response.render('blog-posts/show', { blogPosts: blogPosts });
   }).catch((error) => {
     throw error;
   });
