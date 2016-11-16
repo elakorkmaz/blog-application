@@ -41,19 +41,37 @@ app.get('/', (request, response) => {
   });
 });
 
-app.get('/new', (request, response) => {
-  response.render('blog-posts/new');
+app.get('/:slug', (request, response) => {
+  db.BlogPost.findOne({
+    where: {
+      slug: request.params.slug
+    }
+  }).then((blogPost) => {
+    response.render('blog-posts/show', { blogPost: blogPost });
+  }).catch((error) => {
+    res.status(404).end();
+  });
 });
 
-app.get('/show', (request, response) => {
-  response.render('blog-posts/show');
-});
-
-app.get('/blog-posts/admin', (request, response) => {
+app.get('/admin/blog-posts', (request, response) => {
   db.BlogPost.findAll().then((blogPosts) => {
     response.render('blog-posts/admin', { blogPosts: blogPosts });
   }).catch((error) => {
     throw error;
+  });
+});
+
+app.get('/admin/blog-posts/new', (request, response) => {
+  response.render('blog-posts/new');
+});
+
+app.get('/admin/blog-posts/:id/edit', (request, response) => {
+  db.BlogPost.findOne({
+    where: {
+      id: request.params.id
+    }
+  }).then((blogPost) => {
+    response.render('blog-posts/edit', { blogPost: blogPost });
   });
 });
 
@@ -72,7 +90,7 @@ app.put('/blog-posts/:id', (request, response) => {
       id: request.params.id
     }
   }).then(() => {
-    res.redirect('/' + post.slug);
+    res.redirect('/' + blogPost.slug);
   });
 });
 
