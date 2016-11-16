@@ -41,32 +41,20 @@ app.get('/', (request, response) => {
   });
 });
 
-app.get('/:slug', (request, response) => {
-  db.BlogPost.findOne({
-    where: {
-      slug: request.params.slug
-    }
-  }).then((blogPost) => {
-    response.render('/blog-posts/show', { blogPost: blogPost });
-  }).catch((error) => {
-    response.status(404).end();
-  });
-});
-
 app.get('/new', (request, response) => {
-  response.render('blog-posts/new');
-});
-
-app.get('/admin/blog-posts', (request, response) => {
-  response.render('blog-posts/index');
-});
-
-app.get('/admin/blog-posts/new', (request, response) => {
   response.render('blog-posts/new');
 });
 
 app.get('/show', (request, response) => {
   response.render('blog-posts/show');
+});
+
+app.get('/blog-posts/admin', (request, response) => {
+  db.BlogPost.findAll().then((blogPosts) => {
+    response.render('blog-posts/admin', { blogPosts: blogPosts });
+  }).catch((error) => {
+    throw error;
+  });
 });
 
 app.post('/blog-posts', (request, response) => {
@@ -95,18 +83,6 @@ app.delete('/blog-posts/:id', (request, response) => {
     }
   }).then(() => {
     res.redirect('/admin/blog-posts');
-  });
-});
-
-app.get('/admin/blog-posts/:id/edit', (request, response) => {
-  db.BlogPost.findOne({
-    where: {
-      id: request.params.slug
-    }
-  }).then((blogPost) => {
-    res.render('blog-posts/show', { blogPost: blogPost });
-  }).catch((error) => {
-    res.status(404);
   });
 });
 
