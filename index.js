@@ -37,7 +37,7 @@ app.use(methodOverride((req, res) => {
 
 app.get('/', (request, response) => {
   db.BlogPost.findAll({ order: [['createdAt', 'DESC']] }).then((blogPosts) => {
-    response.render('blog-posts/index', { blogPosts: blogPosts });
+    response.render('index', { blogPosts: blogPosts });
   });
 });
 
@@ -49,13 +49,13 @@ app.get('/:slug', (request, response) => {
   }).then((blogPost) => {
     response.render('blog-posts/show', { blogPost: blogPost });
   }).catch((error) => {
-    res.status(404).end();
+    response.status(404).end();
   });
 });
 
 app.get('/admin/blog-posts', (request, response) => {
   db.BlogPost.findAll().then((blogPosts) => {
-    response.render('blog-posts/show', { blogPosts: blogPosts });
+    response.render('blog-posts/index', { blogPosts: blogPosts });
   }).catch((error) => {
     throw error;
   });
@@ -90,7 +90,7 @@ app.put('/blog-posts/:id', (request, response) => {
       id: request.params.id
     }
   }).then(() => {
-    res.redirect('/' + blogPost.slug);
+    response.redirect('/' + blogPost.slug);
   });
 });
 

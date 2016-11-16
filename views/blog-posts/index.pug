@@ -1,13 +1,19 @@
 extends ../application.pug
 
 block content
-  section(class="container")
+  .container
     .row
       .col-xs-8
         each blogPost in blogPosts
           .card.card-block
-            a(href="/" + blogPost.slug class="h2")=blogPost.title
-            p= blogPost.content
+            h2=blogPost.title
+            p=blogPost.content
+            .col-xs-2.text-xs-right
+              a(href="/blog-posts/" + blogPosts.id + "/edit" class="btn btn-warning") Edit post
+            .col-xs-2.text-xs-right
+              form(action="/blog-posts/" + blogPosts.id method="POST")
+                input(type="hidden" name="_method" value="DELETE")
+                button(type="submit" class="btn btn-danger" data-blogPost=blogPosts.id) Delete post
       .col-xs-4
         .card.card-block
           h3 Sidebar
