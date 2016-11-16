@@ -100,7 +100,7 @@ app.delete('/blog-posts/:id', (request, response) => {
       id: request.params.id
     }
   }).then(() => {
-    res.redirect('/admin/blog-posts');
+    response.redirect('/admin/blog-posts');
   });
 });
 
