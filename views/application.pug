@@ -9,8 +9,11 @@ html
 
       a(class="navbar-brand" href="/") Ela Korkmaz | Blog
 
-      a(class="nav-item nav-link float-xs-right" href="/admin/blog-posts") Admin panel
-      a(class="nav-item nav-link float-xs-right" href="/new") Post a new blog
+      ul(class="nav navbar-nav float-xs-right")
+        li(class="nav-item active")
+          a(class="nav-link" href="/admin/blog-posts") Admin panel
+        li(class="nav-item active")
+          a(class="nav-link" href="/new") Post a new blog
 
     block content
 
