@@ -11,6 +11,8 @@ var app = express(),
 
 var db = require('./models');
 
+console.log(db.Comment);
+
 var BlogPost = sequelize.define('BlogPost', {
   title: Sequelize.STRING,
   slug: Sequelize.STRING,
@@ -35,72 +37,85 @@ app.use(methodOverride((req, res) => {
   }})
 );
 
-app.get('/', (request, response) => {
-  db.BlogPost.findAll({ order: [['createdAt', 'DESC']] }).then((blogPosts) => {
-    response.render('index', { blogPosts: blogPosts });
+app.post('/comments', (req, res) => {
+  console.log(req.body);
+
+  db.Comment.create(req.body).then((comment) => {
+    console.log('comment created');
+    comment.getBlogPost().then((blogPost) => {
+      res.redirect('/' + blogPost.slug);
+    });
   });
 });
 
-app.get('/:slug', (request, response) => {
+app.get('/', (req, res) => {
+  db.BlogPost.findAll({ order: [['createdAt', 'DESC']] }).then((blogPosts) => {
+    res.render('index', { blogPosts: blogPosts });
+  });
+});
+
+app.get('/:slug', (req, res) => {
   db.BlogPost.findOne({
     where: {
-      slug: request.params.slug
+      slug: req.params.slug
     }
   }).then((blogPost) => {
-    response.render('blog-posts/show', { blogPost: blogPost });
+    return blogPost.getComments().then((comments) => {
+    res.render('blog-posts/show', { blogPost: blogPost, comments: comments });
+    });
   }).catch((error) => {
-    response.status(404).end();
+    res.status(404).end();
   });
 });
 
-app.get('/admin/blog-posts', (request, response) => {
+app.get('/admin/blog-posts', (req, res) => {
   db.BlogPost.findAll().then((blogPosts) => {
-    response.render('blog-posts/index', { blogPosts: blogPosts });
+    res.render('blog-posts/index', { blogPosts: blogPosts });
   }).catch((error) => {
     throw error;
   });
 });
 
-app.get('/admin/blog-posts/new', (request, response) => {
-  response.render('blog-posts/new');
+app.get('/admin/blog-posts/new', (req, res) => {
+  res.render('blog-posts/new');
 });
 
-app.get('/admin/blog-posts/:id/edit', (request, response) => {
+app.get('/admin/blog-posts/:id/edit', (req, res) => {
   db.BlogPost.findOne({
     where: {
-      id: request.params.id
+      id: req.params.id
     }
   }).then((blogPost) => {
-    response.render('blog-posts/edit', { blogPost: blogPost });
+    res.render('blog-posts/edit', { blogPost: blogPost });
   });
 });
 
-app.post('/blog-posts', (request, response) => {
-  console.log(request.body);
-    db.BlogPost.create(request.body).then((blogPost) => {
-      response.redirect('/' + blogPost.slug);
+app.post('/blog-posts', (req, res) => {
+  console.log(req.body);
+    db.BlogPost.create(req.body).then((blogPost) => {
+      res.redirect('/' + blogPost.slug);
     }).catch((error) => {
       throw error;
     });
 });
 
-app.put('/blog-posts/:id', (request, response) => {
-  db.BlogPost.update(request.body, {
+app.put('/blog-posts/:id', (req, res) => {
+  db.BlogPost.update(req.body, {
     where: {
-      id: request.params.id
+      id: req.params.id
     }
   }).then(() => {
-    response.redirect('/' + blogPost.slug);
+    res.redirect('/' + blogPost.slug);
   });
 });
 
-app.delete('/blog-posts/:id', (request, response) => {
+app.delete('/blog-posts/:id', (req, res) => {
   db.BlogPost.destroy({
     where: {
-      id: request.params.id
+      id: req.params.id
     }
   }).then(() => {
-    response.redirect('/admin/blog-posts');
+    res.redirect('/admin/blog-posts');
   });
 });
 

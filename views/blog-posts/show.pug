@@ -7,6 +7,19 @@ block content
         .card.card-block
           h2=blogPost.title
           p=blogPost.content
+
+        each comment in comments
+          .card.card-block
+            p= comment.content
+
+        h5 Add a comment
+          form(action="/comments" method="POST")
+            input(type="hidden" name="BlogPostId" value=blogPost.id)
+            .form-group
+              textarea(rows=5 class="form-control" name="content")
+            .form-group.text-xs-right
+              button(type="submit" class="btn btn-success") Add comment
+
       .col-xs-4
         .card.card-block
           h3 Sidebar
