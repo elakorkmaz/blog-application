@@ -7,12 +7,19 @@ block content
         .card.card-block
           h2=blogPost.title
           p=blogPost.content
-          .col-xs-2.float-xs-right
-            a(href="/blog-posts/" + blogPost.id + "/edit" class="btn btn-warning") Edit post
-          .col-xs-2.float-xs-right
-            form(action="/blog-posts/" + blogPost.id method="POST")
-              input(type="hidden" name="_method" value="DELETE")
-              button(type="submit" class="btn btn-danger" data-blogPost=blogPost.id) Delete post
+
+        each comment in comments
+          .card.card-block
+            p= comment.content
+
+        h5 Add a comment
+          form(action="/comments" method="POST")
+            input(type="hidden" name="BlogPostId" value=blogPost.id)
+            .form-group
+              textarea(rows=5 class="form-control" name="content")
+            .form-group.text-xs-right
+              button(type="submit" class="btn btn-success") Add comment
+
       .col-xs-4
         .card.card-block
           h3 Sidebar
