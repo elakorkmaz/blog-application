@@ -1,0 +1,16 @@
+extends ../application.pug
+
+form(action="/admin/posts/{{post.id}}" method="POST")
+  input(type="hidden" name="_method" value="PUT")
+
+  .form-group
+    label Post Title:
+    input(type="text" class="form-control" name="title" value=blogPost.title)
+  .form-group
+    label Post Slug:
+    input(type="text" class="form-control" name="slug" value=blogPost.title)
+  .form-group
+    label Post Slug:
+    textarea(class="form-control" rows="20" name="content")=blogPost.content
+  .form-group.text-xs-right
+    button(type="submit" class="btn btn-success btn-lg") Create blog post

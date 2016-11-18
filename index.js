@@ -11,12 +11,21 @@ var app = express(),
 
 var db = require('./models');
 
+var adminRouter = require('./routes/admin');
+
 console.log(db.Comment);
 
 var BlogPost = sequelize.define('BlogPost', {
   title: Sequelize.STRING,
   slug: Sequelize.STRING,
   content: Sequelize.TEXT
+});
+
+var User = sequelize.define('User', {
+  name: Sequelize.STRING,
+  surname: Sequelize.STRING,
+  email: Sequelize.STRING,
+  password: Sequelize.STRING
 });
 
 app.use(morgan('dev'));
@@ -28,6 +37,8 @@ app.set('view engine', 'pug');
 app.use(morgan('dev'));
 
 app.use(express.static('public'));
+
+app.use('/admin', adminRouter);
 
 app.use(methodOverride((req, res) => {
   if (req.body && typeof req.body === 'object' && '_method' in req.body) {
@@ -65,57 +76,6 @@ app.get('/:slug', (req, res) => {
     });
   }).catch((error) => {
     res.status(404).end();
-  });
-});
-
-app.get('/admin/blog-posts', (req, res) => {
-  db.BlogPost.findAll().then((blogPosts) => {
-    res.render('blog-posts/index', { blogPosts: blogPosts });
-  }).catch((error) => {
-    throw error;
-  });
-});
-
-app.get('/admin/blog-posts/new', (req, res) => {
-  res.render('blog-posts/new');
-});
-
-app.get('/admin/blog-posts/:id/edit', (req, res) => {
-  db.BlogPost.findOne({
-    where: {
-      id: req.params.id
-    }
-  }).then((blogPost) => {
-    res.render('blog-posts/edit', { blogPost: blogPost });
-  });
-});
-
-app.post('/blog-posts', (req, res) => {
-  console.log(req.body);
-    db.BlogPost.create(req.body).then((blogPost) => {
-      res.redirect('/' + blogPost.slug);
-    }).catch((error) => {
-      throw error;
-    });
-});
-
-app.put('/blog-posts/:id', (req, res) => {
-  db.BlogPost.update(req.body, {
-    where: {
-      id: req.params.id
-    }
-  }).then(() => {
-    res.redirect('/' + blogPost.slug);
-  });
-});
-
-app.delete('/blog-posts/:id', (req, res) => {
-  db.BlogPost.destroy({
-    where: {
-      id: req.params.id
-    }
-  }).then(() => {
-    res.redirect('/admin/blog-posts');
   });
 });
 
