@@ -2,16 +2,33 @@ var express = require('express'),
     db = require('../models'),
     router = express.Router();
 
+var requireUser = (req, res, next) => {
+  if (req.path === '/admin') {
+    return next();
+  }
+  if (req.session.user) {
+    next();
+  } else {
+    res.redirect('/login');
+  }
+};
+
+router.use(requireUser);
+
+router.get('/', (req, res) => {
+  res.redirect('/blog-posts');
+});
+
 router.get('/blog-posts', (req, res) => {
   db.BlogPost.findAll({ order: [['createdAt', 'DESC']] }).then((blogPosts) => {
-    res.render('blog-posts/index', { blogPosts: blogPosts });
+    res.render('blog-posts/index', { blogPosts: blogPosts, user: req.session.user });
   }).catch((error) => {
     throw error;
   });
 });
 
 router.get('/blog-posts/new', (req, res) => {
-  res.render('blog-posts/new');
+  res.render('blog-posts/new', { user: req.session.user });
 });
 
 router.get('/blog-posts/:id/edit', (req, res) => {
@@ -20,14 +37,14 @@ router.get('/blog-posts/:id/edit', (req, res) => {
       id: req.params.id
     }
   }).then((blogPost) => {
-    res.render('blog-posts/edit', { blogPost: blogPost });
+    res.render('blog-posts/edit', { blogPost: blogPost, user: req.session.user });
   });
 });
 
 router.post('/blog-posts', (req, res) => {
-    db.BlogPost.create(req.body).then((blogPost) => {
-      res.redirect('/' + blogPost.slug);
-    });
+  db.BlogPost.create(req.body).then((blogPost) => {
+    res.redirect('/' + blogPost.slug);
+  });
 });
 
 router.put('/blog-posts/:id', (req, res) => {
@@ -49,6 +66,5 @@ router.delete('/blog-posts/:id', (req, res) => {
     res.redirect('/admin/blog-posts');
   });
 });
-
 
 module.exports = router;

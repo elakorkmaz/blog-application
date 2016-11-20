@@ -6,14 +6,14 @@ block content
       .col-xs-8.offset-xs-2
         h1 Post a new blog
         form(action="/admin/blog-posts" method="POST")
-          div(class="form-group")
+          .form-group
             label(for="blog-post-title") Title
             input(name="title" type="text" class="form-control" id="blog-post-title" required=true)
-          div(class="form-group")
+          .form-group
             label(for="blog-post-slug") Slug
             input(name="slug" type="text" class="form-control" id="blog-post-slug" required=true)
-          div(class="form-group")
+          .form-group
             label(for="blog-post-content") Content
             textarea(name="content" class="form-control" rows=10 id="blog-post-content" required=true)
-          div(class="form-group text-xs-right")
+          .form-group.text-xs-right
             button(type="submit" class="btn btn-lg btn-success") Post your blog

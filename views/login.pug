@@ -1,0 +1,14 @@
+extends ../views/application.pug
+
+block content
+  .row
+    .col-xs-6.offset-xs-3
+      h1 Login a user
+
+      form(action="/login" method="POST")
+        .form-group
+          input(type="email" name="email" class="form-control" required=true)
+        .form-group
+          input(type="password" name="password" class="form-control" required=true)
+        .form-goup.text-xs-right
+          button(type="submit" class="btn btn-succes btn-lg") Login

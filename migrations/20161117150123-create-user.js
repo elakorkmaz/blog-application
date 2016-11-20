@@ -15,18 +15,20 @@ module.exports = {
         type: Sequelize.STRING
       },
       email: {
-        allowNull: false,
         type: Sequelize.STRING,
+        allowNull: false,
         unique: true
       },
       password: {
-        allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false
       },
       createdAt: {
+        allowNull: false,
         type: Sequelize.DATETIME
       },
       updatedAt: {
+        allowNull: false,
         type: Sequelize.DATETIME
       }
     });
