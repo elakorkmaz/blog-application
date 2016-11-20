@@ -1,8 +1,8 @@
 const express = require('express'),
       displayRoutes = require('express-routemap'),
       morgan = require('morgan'),
-      bodyParser = require('body-parser'),
       pug = require('pug'),
+      bodyParser = require('body-parser'),
       methodOverride = require('method-override'),
       Sequelize = require('sequelize');
 
@@ -12,21 +12,6 @@ var app = express(),
 var db = require('./models');
 
 var adminRouter = require('./routes/admin');
-
-console.log(db.Comment);
-
-var BlogPost = sequelize.define('BlogPost', {
-  title: Sequelize.STRING,
-  slug: Sequelize.STRING,
-  content: Sequelize.TEXT
-});
-
-var User = sequelize.define('User', {
-  name: Sequelize.STRING,
-  surname: Sequelize.STRING,
-  email: Sequelize.STRING,
-  password: Sequelize.STRING
-});
 
 app.use(morgan('dev'));
 
@@ -48,7 +33,7 @@ app.use(methodOverride((req, res) => {
   }})
 );
 
-app.post('/comments', (req, res) => {
+app.post('/blog-posts/:id/comments', (req, res) => {
   console.log(req.body);
 
   db.Comment.create(req.body).then((comment) => {

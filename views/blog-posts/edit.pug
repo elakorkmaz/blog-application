@@ -1,16 +1,20 @@
 extends ../application.pug
 
-form(action="/admin/posts/{{post.id}}" method="POST")
-  input(type="hidden" name="_method" value="PUT")
-
-  .form-group
-    label Post Title:
-    input(type="text" class="form-control" name="title" value=blogPost.title)
-  .form-group
-    label Post Slug:
-    input(type="text" class="form-control" name="slug" value=blogPost.title)
-  .form-group
-    label Post Slug:
-    textarea(class="form-control" rows="20" name="content")=blogPost.content
-  .form-group.text-xs-right
-    button(type="submit" class="btn btn-success btn-lg") Create blog post
+block content
+  .container
+    .row
+      .col-xs-8.offset-xs-2
+        h1 Edit a blog
+        form(action="/admin/blog-posts/" + blogPost.id method="POST")
+          input(type="hidden" name="_method" value="PUT")
+          .form-group
+            label(for="blog-post-title") Title:
+            input(type="text" class="form-control" name="title" id="blog-post-title" value=blogPost.title)
+          .form-group
+            label(for="blog-post-slug") Slug:
+            input(type="text" class="form-control" name="slug" id="blog-post-slug" value=blogPost.slug)
+          .form-group
+            label(for="blog-post-content") Content:
+            textarea(class="form-control" rows=10 name="content" id="blog-post-content" value=blogPost.content)
+          .form-group.text-xs-right
+            button(type="submit" class="btn btn-lg btn-success ") Edit blog post

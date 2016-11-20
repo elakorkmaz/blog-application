@@ -5,7 +5,7 @@ block content
     .row
       .col-xs-8.offset-xs-2
         h1 Post a new blog
-        form(action="/blog-posts" method="POST")
+        form(action="/admin/blog-posts" method="POST")
           div(class="form-group")
             label(for="blog-post-title") Title
             input(name="title" type="text" class="form-control" id="blog-post-title" required=true)

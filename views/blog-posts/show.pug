@@ -13,7 +13,7 @@ block content
             p= comment.content
 
         h5 Add a comment
-          form(action="/comments" method="POST")
+          form(action="/blog-posts/" + blogPost.id + "/comments" method="POST")
             input(type="hidden" name="BlogPostId" value=blogPost.id)
             .form-group
               textarea(rows=5 class="form-control" name="content")

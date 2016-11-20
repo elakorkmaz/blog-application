@@ -3,7 +3,7 @@ var express = require('express'),
     router = express.Router();
 
 router.get('/blog-posts', (req, res) => {
-  db.BlogPost.findAll().then((blogPosts) => {
+  db.BlogPost.findAll({ order: [['createdAt', 'DESC']] }).then((blogPosts) => {
     res.render('blog-posts/index', { blogPosts: blogPosts });
   }).catch((error) => {
     throw error;
@@ -25,11 +25,8 @@ router.get('/blog-posts/:id/edit', (req, res) => {
 });
 
 router.post('/blog-posts', (req, res) => {
-  console.log(req.body);
     db.BlogPost.create(req.body).then((blogPost) => {
       res.redirect('/' + blogPost.slug);
-    }).catch((error) => {
-      throw error;
     });
 });
 
@@ -39,7 +36,7 @@ router.put('/blog-posts/:id', (req, res) => {
       id: req.params.id
     }
   }).then(() => {
-    res.redirect('/' + blogPost.slug);
+    res.redirect('/admin/blog-posts');
   });
 });
 
@@ -52,5 +49,6 @@ router.delete('/blog-posts/:id', (req, res) => {
     res.redirect('/admin/blog-posts');
   });
 });
+
 
 module.exports = router;
