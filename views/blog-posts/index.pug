@@ -11,7 +11,7 @@ block content
             .col-xs-2.text-xs-right
               a(href= "/admin/blog-posts/" + blogPost.id + "/edit" class="btn btn-warning") Edit post
             .col-xs-2.text-xs-right
-              form(action="/blog-posts/" + blogPost.id method="POST")
+              form(action="/admin/blog-posts/" + blogPost.id method="POST")
                 input(type="hidden" name="_method" value="DELETE")
                 button(type="submit" class="btn btn-danger") Delete post
       .col-xs-4

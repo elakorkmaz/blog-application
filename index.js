@@ -31,8 +31,6 @@ app.use(morgan('dev'));
 
 app.use(express.static('public'));
 
-app.use('/admin', adminRouter);
-
 app.use(methodOverride((req, res) => {
   if (req.body && typeof req.body === 'object' && '_method' in req.body) {
     var method = req.body._method;
@@ -40,6 +38,9 @@ app.use(methodOverride((req, res) => {
     return method;
   }})
 );
+
+app.use('/admin', adminRouter);
+
 
 app.get('/', (req, res) => {
   console.log(req.session);
