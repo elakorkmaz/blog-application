@@ -111,11 +111,6 @@ app.post('/blog-posts/:id/comments', (req, res) => {
     });
 });
 
-app.get('/logout', (req, res) => {
-  req.session.user = undefined;
-  res.redirect('/');
-});
-
 sequelize.sync().then(() => {
   console.log('connected to database');
   app.listen(3000, () => {

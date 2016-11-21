@@ -15,6 +15,6 @@ block content
             input(type="text" class="form-control" name="slug" id="blog-post-slug" value=blogPost.slug)
           .form-group
             label(for="blog-post-content") Content:
-            textarea(class="form-control" rows=10 name="content" id="blog-post-content" value=blogPost.content)
+            textarea(class="form-control" rows=10 name="content" id="blog-post-content")=blogPost.content
           .form-group.text-xs-right
             button(type="submit" class="btn btn-lg btn-success ") Edit blog post
