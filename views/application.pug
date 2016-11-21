@@ -5,16 +5,21 @@ html
     meta(charset="utf-8")
     meta(name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no")
   body
+
     nav(class="navbar navbar-dark bg-inverse")
 
       a(class="navbar-brand" href="/") Ela Korkmaz | Blog
 
       if user
-      ul(class="nav navbar-nav float-xs-right")
-        li(class="nav-item active")
-          a(class="nav-link" href="/admin/blog-posts") Admin panel
-        li(class="nav-item active")
-          a(class="nav-link" href="/admin/blog-posts/new") Post a new blog
+        .nav.navbar-nav.float-xs-right
+          a(class="nav-item nav-link active" href="/admin/blog-posts") Admin panel
+          a(class="nav-item nav-link active" href="/admin/blog-posts/new") Post a new blog
+          a(class="nav-item nav-link active" href="/admin/logout" ) Logout
+      else
+
+        .nav.navbar-nav.float-xs-right
+          a(class="nav-item nav-link active" href="/login") Login
+          a(class="nav-item nav-link active" href="/register" ) Register
 
     block content
 

@@ -5,6 +5,7 @@ const express = require('express'),
       bodyParser = require('body-parser'),
       methodOverride = require('method-override'),
       session = require('express-session'),
+      bcrypt = require('bcrypt'),
       Sequelize = require('sequelize');
 
 var app = express(),
@@ -13,6 +14,8 @@ var app = express(),
 var db = require('./models');
 
 var adminRouter = require('./routes/admin');
+
+app.use(express.static('public'));
 
 app.use(morgan('dev'));
 
@@ -27,10 +30,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.set('view engine', 'pug');
 
-app.use(morgan('dev'));
-
-app.use(express.static('public'));
-
 app.use(methodOverride((req, res) => {
   if (req.body && typeof req.body === 'object' && '_method' in req.body) {
     var method = req.body._method;
@@ -40,7 +39,6 @@ app.use(methodOverride((req, res) => {
 );
 
 app.use('/admin', adminRouter);
-
 
 app.get('/', (req, res) => {
   console.log(req.session);
@@ -60,29 +58,30 @@ app.get('/login', (req, res) => {
   res.render('login');
 });
 
-app.post('/login', (req, res) => {
-  console.log(req.body);
-  db.User.findOne({
+app.post('/login', (request, response) => {
+  console.log(request.body.email);
+  var userInDB = db.User.findOne({
     where: {
-      email: req.body.email
+      email: request.body.email
     }
   }).then((userInDB) => {
-    if (userInDB.password === req.body.password) {
-      req.session.user = userInDB;
-      res.redirect('/admin/blog-posts');
+    console.log(userInDB);
+    if (userInDB.password === request.body.password) {
+      request.session.user = userInDB;
+      response.redirect('/admin/blog-posts');
     } else {
-      res.redirect('/login');
+      response.redirect('/login');
     }
   }).catch(() => {
-    res.redirect('/login');
+    response.redirect('/login');
   });
 });
 
-app.post('/users', (req, res) => {
-  db.User.create(req.body).then((user) => {
-    res.redirect('/');
+app.post('/users', (request, response) => {
+  db.User.create(request.body).then((user) => {
+    response.redirect('/admin/blog-posts');
   }).catch(() => {
-    res.redirect('register');
+    response.redirect('/register');
   });
 });
 
@@ -101,7 +100,7 @@ app.get('/:slug', (req, res) => {
 });
 
 app.post('/blog-posts/:id/comments', (req, res) => {
-  db.BlogPost.findById(req.params.id).then((post) => {
+  db.BlogPost.findById(req.params.id).then((blogPost) => {
     var comment = req.body;
     comment.BlogPostId = blogPost.id;
 
