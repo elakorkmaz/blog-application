@@ -2,7 +2,8 @@
 
 module.exports = {
   up: function (queryInterface, Sequelize) {
-    queryInterface.renameColumn('Users', 'password', 'passwordDigest');
+    queryInterface.addColumn('Users', 'passwordResetToken', Sequelize.STRING);
+
     /*
       Add altering commands here.
       Return a promise to correctly handle asynchronicity.
@@ -12,7 +13,8 @@ module.exports = {
   },
 
   down: function (queryInterface, Sequelize) {
-    queryInterface.renameColumn('Users', 'passwordDigest', 'password');
+    queryInterface.removeColumn('Users', 'passwordResetToken');
+
     /*
       Add reverting commands here.
       Return a promise to correctly handle asynchronicity.
