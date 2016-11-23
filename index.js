@@ -5,13 +5,12 @@ const express = require('express'),
       bodyParser = require('body-parser'),
       methodOverride = require('method-override'),
       session = require('express-session'),
-      bcrypt = require('bcrypt'),
       Sequelize = require('sequelize');
+
+var db = require('./models');
 
 var app = express(),
     sequelize = new Sequelize('blog', process.env.POSTGRES_USER, process.env.POSTGRES_PASSWORD, { dialect: 'postgres' });
-
-var db = require('./models');
 
 const adminRouter = require('./routes/admin'),
       authenticationRouter = require('./routes/authentication'),
@@ -19,7 +18,7 @@ const adminRouter = require('./routes/admin'),
 
 app.set('view engine', 'pug');
 
-app.use(express.static('public'));
+// app.use(express.static('public'));
 
 app.use(morgan('dev'));
 

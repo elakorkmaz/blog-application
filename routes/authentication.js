@@ -1,7 +1,5 @@
 var express = require('express'),
-    nodemailer = require('nodemailer'),
-    crypto = require('crypto'),
-    base64url = require('base64url'),
+    bcrypt = require('bcrypt'),
     db = require('../models'),
     router = express.Router();
 
@@ -29,19 +27,24 @@ router.post('/login', (req, res) => {
         req.session.user = userInDB;
         res.redirect('/');
       } else {
-        res.redirect('/login');
+        res.redirect('/authentication/login');
       }
     });
-  }).catch(() => {
-    res.redirect('/login');
+  }).catch((error) => {
+    console.log('error occured');
+    console.log(error);
+    res.redirect('/authentication/login');
   });
 });
 
-router.post('/users', (request, response) => {
-  db.User.create(request.body).then((user) => {
-    response.redirect('/admin/blog-posts');
-  }).catch(() => {
-    response.redirect('/register');
+router.post('/register', (req, res) => {
+  db.User.create(req.body).then((user) => {
+    req.session.user = user;
+    res.redirect('/');
+  }).catch((error) => {
+    console.log('error occured');
+    console.log(error);
+    res.render('users/new', { errors: error.errors });
   });
 });
 
